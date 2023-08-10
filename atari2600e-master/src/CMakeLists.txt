@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 3.2)
+project(atari)
+set(CMAKE_BUILD_TYPE Debug)
+set(VERBOSE 1)
+#total_objects = main mspace err
+add_compile_options(-Wall -Wextra -pedantic -Wno-switch -Wno-unused-parameter -DLOG_USE_COLOR)
+add_library(mspace mspace.c)
+add_library(main main.c)
+add_library(except except.c)
+add_library(log log.c)
+add_library(cpu cpu.c)
+add_library(tia tia.c)
+add_library(pia pia.c)
+add_executable(a main except mspace log cpu tia pia)
+target_link_libraries(mspace log except tia)
+target_link_libraries(cpu log mspace)
+target_link_libraries(tia log SDL2 pia)
+target_link_libraries(pia SDL2 mspace)
+target_link_libraries(main except mspace log tia pia)
+target_link_libraries(a SDL2)
+
+
+#target_link_libraries(a SDL2)
